@@ -1,0 +1,6 @@
+#!/bin/bash
+
+if [ $1 == "prestart" ]; then
+	LD_LIBRARY_PATH=/opt/nvidia/lib PATH=/opt/nvidia/bin /opt/nvidia/bin/nvidia-container-runtime-hook -prestart
+fi
+
