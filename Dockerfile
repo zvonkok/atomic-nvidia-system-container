@@ -1,8 +1,4 @@
-FROM 	rhel7
- 
-COPY 	yum.repos.d/ /etc/yum.repos.d/
-COPY    client-cert.pem /var/lib/yum/
-COPY	client-key.pem  /var/lib/yum/
+FROM 	centos:7
 
 RUN 	yum install -y kernel-devel-3.10.0-693.el7.x86_64 wget gcc make
 RUN	wget https://us.download.nvidia.com/tesla/384.81/NVIDIA-Linux-x86_64-384.81.run
@@ -13,7 +9,7 @@ RUN     ./nvidia-installer -s -a -q --x-prefix=/opt/nvidia --opengl-prefix=/opt/
 RUN     mkdir -p /opt/nvidia/lib/modules/3.10.0-693.el7.x86_64/kernel/drivers/video/
 RUN     SYSSRC=/usr/src/kernels/3.10.0-693.el7.x86_64 make -C kernel
 RUN	cp kernel/*.ko /opt/nvidia/lib/modules/3.10.0-693.el7.x86_64/kernel/drivers/video/.
-RUN     mkdir /system-container
+RUN     mkdir -p /system-container/nvidia
 
-CMD cp --preserve-links -rv /opt/nvidia/* /system-container/nvidia/.
+CMD 	cp -a -rv /opt/nvidia/* /system-container/nvidia/.
 
