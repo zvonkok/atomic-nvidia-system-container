@@ -41,5 +41,7 @@ clean:
 # modprobe -d /opt/nvidia nvidia 
 # modprobe -d /opt/nvidia nvidia-uvm 
 # modprobe -d /opt/nvidia nvidia-modeset
+
+# mount --bind /root/atomic-nvidia-system-container/hooks.d/ /usr/libexec/oci/hooks.d/
 # docker run -it mnist-keras-tensorflow-cuda9
 

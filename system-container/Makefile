@@ -28,9 +28,9 @@ exports/hostfs/etc/ld.so.conf.d/nvidia.conf: Makefile
 	mkdir -p $(dir $@)	
 	@echo "/opt/nvidia/lib" > $@
 
-exports/hostfs/etc/profile.d/nvidia.sh: Makefile
+exports/hostfs/etc/profile.d/nvidia.sh: nvidia.sh
 	mkdir -p $(dir $@)
-	echo 'PATH=$$PATH:/opt/nvidia/bin' > $@
+	cp $< $@
 	
 exports/hostfs/opt/nvidia/bin/nvidia-mkdev: Makefile
 	mkdir -p $(dir $@)
