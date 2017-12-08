@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -x
+set -e
+
+cd /sys/bus/pci/devices
+
+VENDOR_ID=$1
+
+NUM_OF_DISP_DEV=`cat */vendor | grep ${VENDOR_ID} | wc -l`
+
+N=`expr ${NUM_OF_DISP_DEV} - 1`
+
+for i in `seq 0 $N`
+do
+    mknod -m 666 /dev/nvidia${i} c 195 ${i}
+done
+
+mknod -m 666 /dev/nvidiactl      c 195 255
+mknod -m 666 /dev/nvidia-modeset c 195 254
+
+
+D=`grep nvidia-uvm /proc/devices | awk '{print $1}'`
+
+mknod -m 666 /dev/nvidia-uvm       c $D 0
+mknod -m 666 /dev/nvidia-uvm-tools c $D 1
