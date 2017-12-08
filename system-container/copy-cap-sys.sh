@@ -19,6 +19,7 @@ cp nvidia/lib/libnvidia-compiler.so.${VERSION} exports/hostfs/opt/nvidia/lib/.
 cp -a nvidia/lib/modules exports/hostfs/opt/nvidia/lib/.
 
 cp nvidia/bin/nvidia-container-runtime-hook exports/hostfs/opt/nvidia/bin/.
+cp -a nvidia/etc exports/hostfs/opt/nvidia/.
 cp nvidia/bin/nvidia-container-cli exports/hostfs/opt/nvidia/bin/.
 
-cp nvidia/lib/libnvidia-container.so.* exports/hostfs/opt/nvidia/lib/.
+cp -a nvidia/lib/libnvidia-container.so.* exports/hostfs/opt/nvidia/lib/.

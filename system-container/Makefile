@@ -22,6 +22,7 @@ exports/hostfs/etc/dracut.conf.d/nvidia.conf: Makefile
 exports/hostfs/opt/nvidia: Makefile
 	mkdir -p $@/bin
 	mkdir -p $@/lib
+	mkdir -p $@/etc/nvidia-container-runtime
 
 exports/hostfs/etc/ld.so.conf.d/nvidia.conf: Makefile
 	mkdir -p $(dir $@)	
@@ -29,7 +30,7 @@ exports/hostfs/etc/ld.so.conf.d/nvidia.conf: Makefile
 
 exports/hostfs/etc/profile.d/nvidia.sh: Makefile
 	mkdir -p $(dir $@)
-	@echo 'PATH=$PATH:/opt/nvidia/bin' > $@
+	echo 'PATH=$$PATH:/opt/nvidia/bin' > $@
 	
 exports/hostfs/opt/nvidia/bin/nvidia-mkdev: Makefile
 	mkdir -p $(dir $@)
@@ -39,6 +40,7 @@ exports/hostfs/etc/modprobe.d/nouveau.conf: Makefile
 	mkdir -p $(dir $@)
 	@echo "blacklist nouveau" > $@
 	@echo "install nouveau /bin/true" >> $@
+
 
 modules.order: Makefile
 	touch exports/hostfs/opt/nvidia/lib/modules/$(KERNEL)/$@
@@ -79,6 +81,7 @@ clean:
 # docker login --username zvonkok --password='o2lZcl!On1oCCN&g' docker.io
 # atomic pull --storage ostree docker.io/zvonkok/redhat:nvidia-384.81
 # atomic install --system --system-package=no zvonkok/redhat:nvidia-384.81 
+# ldconfig
 
 
 
