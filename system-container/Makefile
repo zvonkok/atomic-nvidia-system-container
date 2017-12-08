@@ -34,7 +34,8 @@ exports/hostfs/etc/profile.d/nvidia.sh: Makefile
 	
 exports/hostfs/opt/nvidia/bin/nvidia-mkdev: Makefile
 	mkdir -p $(dir $@)
-	cp nvidia-mkdev $@
+	cp -a nvidia-mkdev $@
+	
 
 exports/hostfs/etc/modprobe.d/nouveau.conf: Makefile
 	mkdir -p $(dir $@)
@@ -56,15 +57,12 @@ exports: exports/hostfs/opt/nvidia \
 	exports/hostfs/etc/ld.so.conf.d/nvidia.conf  \
 	exports/hostfs/etc/profile.d/nvidia.sh  \
 	exports/hostfs/etc/modprobe.d/nouveau.conf \
-	exports/hostfs/opt/nvidia/bin/nvidia-mkdev \
-	modules.order \
-	modules.builtin \
-	modules.dep
+	exports/hostfs/opt/nvidia/bin/nvidia-mkdev 
 
 capabilities: copy-cap-sys.sh
 	./copy-cap-sys.sh $(VERSION) compute utility
 
-all: exports capabilities hook
+all: exports capabilities hook modules.order modules.builtin modules.dep
 	docker build -t $(USERNAME)/$(REPO)\:latest .
 	docker tag $(USERNAME)/$(REPO)\:latest docker.io/$(USERNAME)/$(REPO)\:nvidia-$(VERSION)
 

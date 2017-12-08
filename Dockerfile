@@ -11,5 +11,5 @@ RUN     SYSSRC=/usr/src/kernels/3.10.0-693.el7.x86_64 make -C kernel
 RUN	cp kernel/*.ko /opt/nvidia/lib/modules/3.10.0-693.el7.x86_64/kernel/drivers/video/.
 RUN     mkdir -p /system-container/nvidia
 
-CMD 	cp -a -rv /opt/nvidia/* /system-container/nvidia/.
+CMD 	cp -a -rv /opt/nvidia/* /system-container/nvidia/. 
 

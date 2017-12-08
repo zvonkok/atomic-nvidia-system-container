@@ -22,8 +22,10 @@ nvidia-container-runtime: Makefile
 	cd nvidia-container-runtime && \
 	SYS_CON_DIR=$(SYS_CON_DIR) make 1.12.6-centos7
 
+nouveau: Makefile
+	modprobe -r nouveau
 
-build: NVIDIA libnvidia-container nvidia-container-runtime
+build: nouveau NVIDIA libnvidia-container nvidia-container-runtime
 
 clean:
 	rm -rf system-container/nvidia
