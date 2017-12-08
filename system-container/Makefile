@@ -1,5 +1,5 @@
 USERNAME := zvonkok
-IMAGE := atomic-nvidia-syscon
+REPO := redhat
 VERSION := 384.81
 
 hook: exports/hostfs/usr/libexec/oci/hooks.d/oci-nvidia-container-runtime
@@ -26,22 +26,29 @@ exports/hostfs/etc/ld.so.conf.d/nvidia.conf: Makefile
 	mkdir -p $(dir $@)	
 	@echo "/opt/nvidia/lib" > $@
 
+exports/hostfs/etc/profile.d/nvidia.sh: Makefile
+	mkdir -p $(dir $@)
+	@echo "export PATH=$PATH:/opt/nvidia/bin" > $@
+
 exports: exports/hostfs/opt/nvidia \
 	exports/manifest.json \
 	exports/config.json.template \
 	exports/hostfs/etc/dracut.conf.d/nvidia.conf \
-	exports/hostfs/etc/ld.so.conf.d/nvidia.conf 
+	exports/hostfs/etc/ld.so.conf.d/nvidia.conf  \
+	exports/hostfs/etc/profile.d/nvidia.sh
 
 capabilities: copy-cap-sys.sh
-		./copy-cap-sys.sh $(VERSION) compute utility
+	./copy-cap-sys.sh $(VERSION) compute utility
 
-build: exports capabilities hook
-	docker build -t $(USERNAME)/$(IMAGE)\:latest .
-	docker tag $(USERNAME)/$(IMAGE)\:latest $(USERNAME)/$(IMAGE)\:$(VERSION)
+all: exports capabilities hook
+	docker build -t $(USERNAME)/$(REPO)\:latest .
+	docker tag $(USERNAME)/$(REPO)\:latest docker.io/$(USERNAME)/$(REPO)\:nvidia-$(VERSION)
 
-all: build
+push: all
+	docker login --username zvonkok --password='o2lZcl!On1oCCN&g' 
+	docker push docker.io/zvonkok/redhat:nvidia-$(VERSION)	
 
 clean: 
 	rm -rf exports
 
-.PHONY: clean all build exports hook
+.PHONY: clean all exports hook
