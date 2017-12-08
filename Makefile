@@ -31,3 +31,15 @@ clean:
 	rm -rf system-container/nvidia
 
 .PHONY: clean build all
+
+# yum install atomic
+# docker login --username zvonkok --password='o2lZcl!On1oCCN&g' docker.io
+# atomic pull --storage ostree docker.io/zvonkok/redhat:nvidia-384.81
+# atomic install --system --system-package=no zvonkok/redhat:nvidia-384.81
+# ldconfig
+# modprobe -r nouveau
+# modprobe -d /opt/nvidia nvidia 
+# modprobe -d /opt/nvidia nvidia-uvm 
+# modprobe -d /opt/nvidia nvidia-modeset
+# docker run -it mnist-keras-tensorflow-cuda9
+
