@@ -34,14 +34,10 @@ clean:
 
 # yum install atomic
 # docker login --username zvonkok --password='o2lZcl!On1oCCN&g' docker.io
+# docker pull docker.io/zvonkok/redhat:mnist-keras-tensorflow-cuda9
 # atomic pull --storage ostree docker.io/zvonkok/redhat:nvidia-384.81
 # atomic install --system --system-package=no zvonkok/redhat:nvidia-384.81
-# ldconfig
-# modprobe -r nouveau
-# modprobe -d /opt/nvidia nvidia 
-# modprobe -d /opt/nvidia nvidia-uvm 
-# modprobe -d /opt/nvidia nvidia-modeset
 
 # mount --bind /root/atomic-nvidia-system-container/hooks.d/ /usr/libexec/oci/hooks.d/
-# docker run -it mnist-keras-tensorflow-cuda9
+# docker run -it docker.io/zvonkok/redhat:mnist-keras-tensorflow-cuda9
 
