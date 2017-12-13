@@ -38,6 +38,8 @@ clean:
 # atomic pull --storage ostree docker.io/zvonkok/redhat:nvidia-384.81
 # atomic install --system --system-package=no zvonkok/redhat:nvidia-384.81
 
+# chcon -t svirt_sandbox_file_t  /dev/nvidia*
+
 # mount --bind /root/atomic-nvidia-system-container/hooks.d/ /usr/libexec/oci/hooks.d/
 # docker run -it docker.io/zvonkok/redhat:mnist-keras-tensorflow-cuda9
 
