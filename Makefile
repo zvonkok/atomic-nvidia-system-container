@@ -33,7 +33,7 @@ clean:
 .PHONY: clean build all
 
 # yum install atomic
-# docker login --username zvonkok --password='o2lZcl!On1oCCN&g' docker.io
+# docker login --username zvonkok --password='' docker.io
 # docker pull docker.io/zvonkok/redhat:mnist-keras-tensorflow-cuda9
 # atomic pull --storage ostree docker.io/zvonkok/redhat:nvidia-384.81
 # atomic install --system --system-package=no zvonkok/redhat:nvidia-384.81
