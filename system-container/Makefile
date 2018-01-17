@@ -67,7 +67,7 @@ all: exports capabilities hook modules.order modules.builtin modules.dep
 	docker tag $(USERNAME)/$(REPO)\:latest docker.io/$(USERNAME)/$(REPO)\:nvidia-$(VERSION)
 
 push: all
-	docker login --username zvonkok --password='o2lZcl!On1oCCN&g' docker.io
+	docker login --username zvonkok --password='' docker.io
 	docker push docker.io/zvonkok/redhat:nvidia-$(VERSION)	
 
 clean: 
