@@ -1,6 +1,6 @@
 USERNAME := zvonkok
 REPO := redhat
-VERSION := 384.81
+VERSION := $(shell rpm -qv nvidia-kmod | cut -d '-' -f3)
 KERNEL := $(shell uname -r)
 
 hook: exports/hostfs/usr/libexec/oci/hooks.d/oci-nvidia-container-runtime
@@ -31,11 +31,10 @@ exports/hostfs/etc/ld.so.conf.d/nvidia.conf: Makefile
 exports/hostfs/etc/profile.d/nvidia.sh: nvidia.sh
 	mkdir -p $(dir $@)
 	cp $< $@
-	
+
 exports/hostfs/opt/nvidia/bin/nvidia-mkdev: Makefile
 	mkdir -p $(dir $@)
 	cp -a nvidia-mkdev $@
-	
 
 exports/hostfs/etc/modprobe.d/nouveau.conf: Makefile
 	mkdir -p $(dir $@)
@@ -59,16 +58,13 @@ exports: exports/hostfs/opt/nvidia \
 	exports/hostfs/etc/modprobe.d/nouveau.conf \
 	exports/hostfs/opt/nvidia/bin/nvidia-mkdev 
 
-capabilities: copy-cap-sys.sh
-	./copy-cap-sys.sh $(VERSION) compute utility
-
-all: exports capabilities hook modules.order modules.builtin modules.dep
+all: exports hook modules.order modules.builtin modules.dep
 	docker build -t $(USERNAME)/$(REPO)\:latest .
-	docker tag $(USERNAME)/$(REPO)\:latest docker.io/$(USERNAME)/$(REPO)\:nvidia-$(VERSION)
+	docker tag $(USERNAME)/$(REPO)\:latest docker.io/$(USERNAME)/$(REPO)\:nvidia-$(VERSION)-kernel-$(KERNEL)
 
 push: all
 	docker login --username zvonkok --password='' docker.io
-	docker push docker.io/zvonkok/redhat:nvidia-$(VERSION)	
+	docker push docker.io/zvonkok/redhat:nvidia-$(VERSION)-kernel-$(KERNEL)
 
 clean: 
 	rm -rf exports

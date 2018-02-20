@@ -1,15 +1,29 @@
-FROM 	centos:7
+FROM 	registry.access.redhat.com/rhel7
 
-RUN 	yum install -y kernel-devel-3.10.0-693.el7.x86_64 wget gcc make
-RUN	wget https://us.download.nvidia.com/tesla/384.81/NVIDIA-Linux-x86_64-384.81.run
-RUN 	chmod +x NVIDIA-Linux-x86_64-384.81.run
-RUN 	./NVIDIA-Linux-x86_64-384.81.run -x
-WORKDIR NVIDIA-Linux-x86_64-384.81 
-RUN     ./nvidia-installer -s -a -q --x-prefix=/opt/nvidia --opengl-prefix=/opt/nvidia --utility-prefix=/opt/nvidia --documentation-prefix=/opt/nvidia --no-kernel-module
-RUN     mkdir -p /opt/nvidia/lib/modules/3.10.0-693.el7.x86_64/kernel/drivers/video/
-RUN     SYSSRC=/usr/src/kernels/3.10.0-693.el7.x86_64 make -C kernel
-RUN	cp kernel/*.ko /opt/nvidia/lib/modules/3.10.0-693.el7.x86_64/kernel/drivers/video/.
-RUN     mkdir -p /system-container/nvidia
+USER    0
 
-CMD 	cp -a -rv /opt/nvidia/* /system-container/nvidia/. 
+
+RUN     mkdir -p /opt/nvidia/bin
+
+COPY    yum.repos.d/* /etc/yum.repos.d/
+COPY    *.pem /var/lib/yum/
+
+
+RUN     yum -y install kernel-devel-`uname -r`
+
+RUN     rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN     rpm -ivh https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-repo-rhel7-9.1.85-1.x86_64.rpm
+
+
+RUN     mkdir -p /lib/modules/`uname -r`
+RUN     ln -s /usr/src/kernels/`uname -r` /lib/modules/`uname -r`/build
+
+
+RUN     yum -y install xorg-x11-drv-nvidia xorg-x11-drv-nvidia-devel
+RUN     curl -s -L https://nvidia.github.io/nvidia-container-runtime/centos7/x86_64/nvidia-container-runtime.repo |  tee /etc/yum.repos.d/nvidia-container-runtime.repo
+RUN     yum -y install nvidia-container-runtime-1.1.1-1.docker1.13.1.x86_64
+
+
+COPY    copy-cap-sys.sh /usr/local/bin/.
+CMD     copy-cap-sys.sh compute utility
 
