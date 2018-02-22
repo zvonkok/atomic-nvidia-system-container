@@ -5,9 +5,6 @@ KVERSION := $(uname -r)
 
 all: build
 
-system-container/nvidia: Makefile
-	mkdir -p $@
-
 repo:   Makefile
 	cp -r /etc/yum.repos.d/ .
 	cp /var/lib/yum/*.pem .
